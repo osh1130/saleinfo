@@ -6,15 +6,20 @@ SaleInfo is a Python project for web scraping and storing mobile phone discount 
 
 The project is organized as follows:
 
-project_folder/
-├── discount_data.json # Stores brand, model, and discount information in a JSON file
-├── spiders/
-│ ├── one_spider.py # Spider for the One channel
-│ ├── 2degrees_spider.py # Spider for the 2Degrees channel
-│ ├── spark_spider.py # Spider for the Spark channel
-├── data_processing.py # Module for data loading, modification, and saving JSON data
-├── excel_export.py # Module for exporting JSON data to Excel
-├── database.py # Module for database operations, including connection, data insertion, and querying
+## Project Structure
+
+The project is organized as follows:
+
+- `project_folder/`
+  - `discount_data.json` : Stores brand, model, and discount information in a JSON file.
+  - `spiders/` : Directory containing spider scripts for different channels.
+    - `one_spider.py` : Spider for the One channel.
+    - `2degrees_spider.py` : Spider for the 2Degrees channel.
+    - `spark_spider.py` : Spider for the Spark channel.
+  - `data_processing.py` : Module for data loading, modification, and saving JSON data.
+  - `excel_export.py` : Module for exporting JSON data to Excel.
+  - `database.py` : Module for database operations, including connection, data insertion, and querying.
+
 
 ## git clone [https://github.com/your_username/SaleInfo.git](https://github.com/osh1130/saleinfo.git)
 Install the required Python libraries:
