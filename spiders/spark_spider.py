@@ -2,6 +2,10 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 import data_processing
 
@@ -14,15 +18,17 @@ discount_data = data_processing.load_discount_data()
 
 def read(url):
     driver.get(url)
-    time.sleep(6)
+    #time.sleep(6)
+    # 使用显式等待等待元素加载完成
+    WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-regionid="productGallery"]')))
     html = driver.page_source
     bf = BeautifulSoup(html, 'html.parser')
-    return bf, driver
+    return bf
 
 def devices(bf,brand):
     devices = bf.find_all('div', {'data-regionid': 'productGallery'})
     for device in devices:
-        model = device.find('h5').text
+        model = device.find('h5').text.replace(brand, "").strip()
         price = device.find('p',{"title": "Device only price"}).text
         original_price = price.split('$')[1].replace(',','').split(".")[0]
         saving = device.find('p',{'class':"sc-834c5326-3 sc-834c5326-13 fwTbqt dsioqg"})
@@ -35,15 +41,13 @@ def devices(bf,brand):
         else:
             discount = 0
         itemsql = [model, discount, brand, original_price]
+        #print(itemsql)
         writeinjson(itemsql)
 
 def writeinjson(itemsql):
     model, discount, brand, original_price = itemsql
-    if brand not in discount_data:
-        discount_data[brand] = {}
-    if model not in discount_data[brand]:
-        discount_data[brand][model] = {}
-    discount_data[brand][model]["original_price"] = original_price
+    #discount_data[brand][model]["original_price"] = original_price
+    data_processing.add_discount(brand, model, "original_price", original_price, discount_data)
     # 使用模块中的函数添加折扣信息
     data_processing.add_discount(brand, model, "Spark", discount, discount_data)
 
@@ -62,12 +66,15 @@ def crawl_spark(spark_brands_and_urls):
         bf = read(url)
         devices(bf, brand)  # 指定渠道为 "Spark"
 
+    print("spark done!")
+    # 保存折扣数据到JSON文件
+    data_processing.save_discount_data(discount_data)
+
+    # 关闭WebDriver
+    driver.quit()
+
 # 调用 Spark 渠道的折扣信息爬取函数
 #crawl_spark(spark_brands_and_urls)
 
-# 保存折扣数据到JSON文件
-data_processing.save_discount_data(discount_data)
 
-# 关闭WebDriver
-driver.quit()
 

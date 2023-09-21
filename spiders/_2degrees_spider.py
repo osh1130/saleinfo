@@ -2,18 +2,22 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import data_processing
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # 设置为headless模式，不显示浏览器窗口
 chrome_options.add_argument("--disable-gpu")  # 禁用GPU加速，可避免一些兼容性问题
+chrome_options.add_argument('--disable-blink-features=AutomationControlled')
 driver = webdriver.Chrome(options=chrome_options)
 
 discount_data = data_processing.load_discount_data()
 
 def read(url):
     driver.get(url)
-    time.sleep(6)
+    WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[class="tile-layout-col mt-5 d-flex"]')))
     html = driver.page_source
     bf = BeautifulSoup(html, 'html.parser')
     return bf
@@ -33,13 +37,9 @@ def devices(bf,brand):
 
 def writeinjson(itemsql):
     model, discount, brand = itemsql
-    if brand not in discount_data:
-        discount_data[brand] = {}
-    if model not in discount_data[brand]:
-        discount_data[brand][model] = {}
     # 使用模块中的函数添加折扣信息
     data_processing.add_discount(brand, model, "2degrees", discount, discount_data)
-
+    #print(discount_data[brand][model])
 
 degrees_brands_and_urls = {
     "Apple": "https://www.2degrees.nz/shop/browse?filterKey1=itemBrand&filterValue1=Apple&filterKey2=itemCategory&filterValue2=Mobile+Phones",
@@ -53,11 +53,17 @@ def crawl_2degrees(degrees_brands_and_urls):
         bf = read(url)
         devices(bf, brand)
 
-# 保存折扣数据到JSON文件
-data_processing.save_discount_data(discount_data)
+    print("2d done!")
 
-# 关闭WebDriver
-driver.quit()
+    # 保存折扣数据到JSON文件
+    data_processing.save_discount_data(discount_data)
+
+    # 关闭WebDriver
+    driver.quit()
+
+#crawl_2degrees(degrees_brands_and_urls)
+
+
 
 
 

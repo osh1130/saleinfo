@@ -1,0 +1,26 @@
+-- 品牌表
+CREATE TABLE IF NOT EXISTS brands (
+    brand_id INT AUTO_INCREMENT PRIMARY KEY,
+    brand_name VARCHAR(255) NOT NULL
+);
+
+-- 型号表
+CREATE TABLE IF NOT EXISTS models (
+    model_id INT AUTO_INCREMENT PRIMARY KEY,
+    model_name VARCHAR(255) NOT NULL,
+    brand_id INT,
+    FOREIGN KEY (brand_id) REFERENCES brands (brand_id)
+);
+
+-- 折扣信息表
+CREATE TABLE IF NOT EXISTS discounts (
+    discount_id INT AUTO_INCREMENT PRIMARY KEY,
+    brand_id INT,
+    model_id INT,
+    channel VARCHAR(255) NOT NULL,
+    discount_amount FLOAT,
+    original_price FLOAT,
+    date DATE,
+    FOREIGN KEY (brand_id) REFERENCES brands (brand_id),
+    FOREIGN KEY (model_id) REFERENCES models (model_id)
+);
