@@ -4,6 +4,14 @@ import json
 
 from saveinjson.data_processing import load_discount_data
 
+# import os
+#
+# host = os.getenv('AWS_RDS_HOST')
+# port = int(os.getenv('AWS_RDS_PORT'))
+# user = os.getenv('AWS_RDS_USER')
+# password = os.getenv('AWS_RDS_PASSWORD')
+# database = 'saleinfo'  # 你可以选择在代码中指定数据库名称或者将其作为环境变量
+
 # AWS RDS 数据库连接配置
 host = 'saleinfo.c39emc4fhkii.us-east-1.rds.amazonaws.com'  # 替换成你的 AWS RDS 数据库端点
 port = 3306
