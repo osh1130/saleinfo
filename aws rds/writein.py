@@ -2,7 +2,9 @@ from datetime import datetime
 import pymysql
 import json
 
-from saveinjson.data_processing import load_discount_data
+#from saveinjson.data_processing import load_discount_data
+from saleinfo.saveinjson.data_processing import load_discount_data
+
 
 # import os
 #
