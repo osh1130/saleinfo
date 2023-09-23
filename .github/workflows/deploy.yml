@@ -32,4 +32,5 @@ jobs:
         run: |
           # 在这里执行部署操作，包括启动你的Python应用程序
           python main.py
+          working-directory: ./saleinfo  # 设置为你的项目根目录
 
