@@ -1,0 +1,33 @@
+name: Deploy saleinfo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Deploy to AWS
+        env:  # 设置环境变量
+          AWS_RDS_HOST: ${{ secrets.AWS_RDS_HOST }}
+          AWS_RDS_PORT: ${{ secrets.AWS_RDS_PORT }}
+          AWS_RDS_USER: ${{ secrets.AWS_RDS_USER }}
+          AWS_RDS_PASSWORD: ${{ secrets.AWS_RDS_PASSWORD }}
+        run: |
+          # 在这里执行部署操作，包括启动你的Python应用程序
+          python main.py
+
