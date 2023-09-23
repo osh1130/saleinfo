@@ -9,9 +9,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.service import Service
-sys.path.append('F:\\saleinfo')
-
-import data_processing
+# 获取当前脚本文件的目录
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+sys.path.append(parent_dir)
+from saveinjson import data_processing
 
 discount_data = data_processing.load_discount_data()
 
@@ -20,7 +22,9 @@ chrome_options = Options()
 chrome_options.add_argument("--headless")  # 设置为headless模式，不显示浏览器窗口
 chrome_options.add_argument("--disable-gpu")  # 禁用GPU加速，可避免一些兼容性问题
 chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-chrome_driver_path = "F:\chromedriver-win64\chromedriver-win64\chromedriver.exe"  # 指定你下载的匹配版本的 ChromeDriver 路径
+# 构建相对路径到chromedriver.exe
+chrome_driver_path = os.path.join(script_dir, 'chromedriver.exe')
+#chrome_driver_path = "F:\saleinfo\spiders\chromedriver.exe"  # 指定你下载的匹配版本的 ChromeDriver 路径
 service = Service(chrome_driver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -83,8 +87,8 @@ def crawl_One():
     # 关闭WebDriver
     driver.quit()
 
-#if __name__ == '__main__':
-crawl_One()
+if __name__ == '__main__':
+    crawl_One()
 
 
 

@@ -1,5 +1,5 @@
+import os
 import sys
-import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -7,13 +7,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
-sys.path.append('F:\\saleinfo')
-import data_processing
+# 获取当前脚本文件的目录
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+sys.path.append(parent_dir)
+from saveinjson import data_processing
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # 设置为headless模式，不显示浏览器窗口
 chrome_options.add_argument("--disable-gpu")  # 禁用GPU加速，可避免一些兼容性问题
-chrome_driver_path = "F:\chromedriver-win64\chromedriver-win64\chromedriver.exe"  # 指定你下载的匹配版本的 ChromeDriver 路径
+# 构建相对路径到chromedriver.exe
+chrome_driver_path = os.path.join(script_dir, 'chromedriver.exe')
+#chrome_driver_path = "F:\saleinfo\spiders\chromedriver.exe"  # 指定你下载的匹配版本的 ChromeDriver 路径
 service = Service(chrome_driver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
