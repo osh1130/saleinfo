@@ -32,5 +32,6 @@ current_date = datetime.now().date()
 current_directory = os.path.dirname(os.path.abspath(__file__))
 name = current_directory + '//create_excel//'+ 'SaleInfo-%s.xlsx' % (str(current_date))
 excel_export.export_to_excel(discount_data, name)
+print("excel done")
 
-subprocess.run(["python", "aws rds/writein.py"])
+#subprocess.run(["python", "aws rds/writein.py"])
