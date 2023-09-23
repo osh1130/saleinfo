@@ -1,3 +1,4 @@
+import sys
 import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -5,14 +6,16 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-
+from selenium.webdriver.chrome.service import Service
+sys.path.append('F:\\saleinfo')
 import data_processing
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # 设置为headless模式，不显示浏览器窗口
 chrome_options.add_argument("--disable-gpu")  # 禁用GPU加速，可避免一些兼容性问题
-driver = webdriver.Chrome(options=chrome_options)
+chrome_driver_path = "F:\chromedriver-win64\chromedriver-win64\chromedriver.exe"  # 指定你下载的匹配版本的 ChromeDriver 路径
+service = Service(chrome_driver_path)
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 discount_data = data_processing.load_discount_data()
 
@@ -74,7 +77,5 @@ def crawl_spark(spark_brands_and_urls):
     driver.quit()
 
 # 调用 Spark 渠道的折扣信息爬取函数
-#crawl_spark(spark_brands_and_urls)
-
-
-
+if __name__ == '__main__':
+    crawl_spark(spark_brands_and_urls)

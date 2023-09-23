@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
@@ -7,6 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.service import Service
+sys.path.append('F:\\saleinfo')
 
 import data_processing
 
@@ -17,7 +20,9 @@ chrome_options = Options()
 chrome_options.add_argument("--headless")  # 设置为headless模式，不显示浏览器窗口
 chrome_options.add_argument("--disable-gpu")  # 禁用GPU加速，可避免一些兼容性问题
 chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-driver = webdriver.Chrome(options=chrome_options)
+chrome_driver_path = "F:\chromedriver-win64\chromedriver-win64\chromedriver.exe"  # 指定你下载的匹配版本的 ChromeDriver 路径
+service = Service(chrome_driver_path)
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 def read(url):
     driver.get(url)
@@ -78,6 +83,8 @@ def crawl_One():
     # 关闭WebDriver
     driver.quit()
 
+#if __name__ == '__main__':
+crawl_One()
 
 
 
