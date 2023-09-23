@@ -9,7 +9,7 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 # 创建一个全局锁
 file_lock = multiprocessing.Lock()
 def load_discount_data():
-    with open(current_directory+'\\discount_data.json', 'r') as json_file:
+    with open(current_directory+'//discount_data.json', 'r') as json_file:
         discount_data = json.load(json_file)
     return discount_data
 
@@ -36,5 +36,5 @@ def save_discount_data(discount_data):
         original_data.update(discount_data)
 
         # 保存合并后的数据
-        with open(current_directory+'\\discount_data.json', 'w') as json_file:
+        with open(current_directory+'//discount_data.json', 'w') as json_file:
             json.dump(original_data, json_file, indent=4)
