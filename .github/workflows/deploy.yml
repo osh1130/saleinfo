@@ -1,7 +1,9 @@
 name: Deploy saleinfo
 
 on:
-  workflow_dispatch:
+  #workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * *'  # 在UTC时间中的每天中午十二点运行
 
 jobs:
   deploy:
