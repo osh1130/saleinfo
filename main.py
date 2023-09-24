@@ -17,14 +17,14 @@ with open('saveinjson/discount_data.json', 'w') as json_file:
 json_file.close()
 
 # 运行第一个脚本
-#subprocess.run(["python", "spiders/spark_spider.py"])
+subprocess.run(["python", "spiders/spark_spider.py"])
 
 
 #运行第二个脚本
-#subprocess.run(["python", "spiders/one_spider.py"])
+subprocess.run(["python", "spiders/one_spider.py"])
 
 #运行第三个脚本
-#subprocess.run(["python", "spiders/_2degrees_spider.py"])
+subprocess.run(["python", "spiders/_2degrees_spider.py"])
 
 # 加载折扣数据从JSON文件，或者使用你已有的数据
 discount_data = data_processing.load_discount_data()
