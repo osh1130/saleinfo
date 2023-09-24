@@ -32,4 +32,12 @@ jobs:
         run: |
           # 在这里执行部署操作，包括启动你的Python应用程序
           python main.py
+          working-directory: /github/workspace  # 设置工作目录为 GitHub Actions 默认的工作目录
+
+      - name: Upload Excel artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact-name
+          path: create_excel  # 这里指定为生成 Excel 文件的保存路径
+      
 
