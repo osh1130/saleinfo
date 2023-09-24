@@ -2,6 +2,7 @@ import os
 import sys
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.common import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -28,7 +29,20 @@ def read(url):
     driver.get(url)
     #time.sleep(6)
     # 使用显式等待等待元素加载完成
-    WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-regionid="productGallery"]')))
+    #WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-regionid="productGallery"]')))
+    max_retries = 3  # 最大重试次数
+
+    for _ in range(max_retries):
+        try:
+            WebDriverWait(driver, 120).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-regionid="productGallery"]')))
+            break  # 如果成功等待到元素，就跳出循环
+        except TimeoutException:
+            # 捕获超时异常，进行重试
+            print("等待超时，正在进行重试...")
+    else:
+        # 如果重试次数超过了最大次数仍然没有成功，可以抛出异常或者进行其他处理
+        print("超过最大重试次数，操作失败。")
     html = driver.page_source
     bf = BeautifulSoup(html, 'html.parser')
     return bf
